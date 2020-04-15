@@ -1,18 +1,13 @@
-# WebView for Flutter (Developers Preview)
+# Add JsBridge to the WebView
 
-[![pub package](https://img.shields.io/pub/v/webview_flutter.svg)](https://pub.dartlang.org/packages/webview_flutter)
-
-A Flutter plugin that provides a WebView widget.
+[A Flutter plugin that provides a JsBridge on WebView widget.](https://pub.dev/packages/bridge_webview_flutter)
 
 On iOS the WebView widget is backed by a [WKWebView](https://developer.apple.com/documentation/webkit/wkwebview);
 On Android the WebView widget is backed by a [WebView](https://developer.android.com/reference/android/webkit/WebView).
 
-## Developers Preview Status
-The plugin relies on Flutter's new mechanism for embedding Android and iOS views.
-As that mechanism is currently in a developers preview, this plugin should also be
-considered a developers preview.
+This plugin based on the [webview_flutter](https://pub.dev/packages/webview_flutter)
 
-Known issues are tagged with the [platform-views](https://github.com/flutter/flutter/labels/a%3A%20platform-views) and/or [webview](https://github.com/flutter/flutter/labels/p%3A%20webview) labels.
+## Developers Preview Status
 
 To use this plugin on iOS you need to opt-in for the embedded views preview by
 adding a boolean property to the app's `Info.plist` file, with the key `io.flutter.embedded_views_preview`
@@ -30,7 +25,43 @@ Opt-in to the embedded views preview by adding a boolean property to the app's `
 with the key `io.flutter.embedded_views_preview` and the value `YES`.
 
 ## Usage
-Add `webview_flutter` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/).
+Add `bridge_webview_flutter` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/).
 
-You can now include a WebView widget in your widget tree.
-See the WebView widget's Dartdoc for more details on how to use the widget.
+### Register a Flutter handler function so that js can call
+```
+onWebViewCreated: (WebViewController webViewController) {
+    _controller.complete(webViewController);
+    webViewController.registerHandler("methodName", response: "r1", onCallBack: (callBackData) {
+        print(callBackData.name); // handler name
+        print(callBackData.data); // callback data ({'param': '1'})
+    });
+}
+```
+#### js can call this handler method "methodName" through:
+```
+WebViewJavascriptBridge.callHandler(
+    'methodName'
+    , {'param': '1'}
+    , function(data) {
+        // data is r1
+    }
+);
+```
+
+### Register a JavaScript handler function so that flutter can call
+```
+WebViewJavascriptBridge.registerHandler("methodName", function(data, responseCallback) {
+    // data is 'sendData'
+    responseCallback('r2');
+});
+```
+#### flutter can call this js handler function "methodName" through:
+```
+onWebViewCreated: (WebViewController webViewController) {
+    _controller.complete(webViewController);
+    webViewController.callHandler("methodName", data: "sendData", onCallBack: (callBackData) {
+        print(callBackData.name); // handler name
+        print(callBackData.data); // callback data (r2)
+    });
+}
+```
