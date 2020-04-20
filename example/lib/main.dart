@@ -7,8 +7,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/platform_interface.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:bridge_webview_flutter/platform_interface.dart';
+import 'package:bridge_webview_flutter/webview_flutter.dart';
 
 void main() => runApp(MaterialApp(home: WebViewExample()));
 
@@ -51,10 +51,18 @@ class _WebViewExampleState extends State<WebViewExample> {
       // to allow calling Scaffold.of(context) so we can show a snackbar.
       body: Builder(builder: (BuildContext context) {
         return WebView(
-          initialUrl: 'http://bridge.bobolaile.com/openVip',
+          initialUrl: 'https://flutter.dev',
           javascriptMode: JavascriptMode.unrestricted,
           onWebViewCreated: (WebViewController webViewController) {
             _controller.complete(webViewController);
+            webViewController.registerHandler("methodName", response: "r1", onCallBack: (callBackData) {
+              print(callBackData.name); // handler name
+              print(callBackData.data); // callback data ({'param': '1'})
+            });
+            webViewController.callHandler("methodName", data: "sendData", onCallBack: (callBackData) {
+              print(callBackData.name); // handler name
+              print(callBackData.data); // callback data (r2)
+            });
           },
           onPageStarted: (String url) {
             print('Page started loading: $url');
