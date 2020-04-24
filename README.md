@@ -48,6 +48,7 @@ BridgeWebView(
     onPageFinished: (String url) {
         print('Page finished loading: $url');
     }
+)
 ```
 
 ### Register a Flutter handler function so that js can call
