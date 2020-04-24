@@ -133,14 +133,14 @@ class JavascriptChannel {
 }
 
 /// A web view widget for showing html content.
-class WebView extends StatefulWidget {
+class BridgeWebView extends StatefulWidget {
   /// Creates a new web view.
   ///
   /// The web view can be controlled using a `WebViewController` that is passed to the
   /// `onWebViewCreated` callback once the web view is created.
   ///
   /// The `javascriptMode` and `autoMediaPlaybackPolicy` parameters must not be null.
-  const WebView({
+  const BridgeWebView({
     Key key,
     this.onWebViewCreated,
     this.initialUrl,
@@ -330,10 +330,10 @@ class WebView extends StatefulWidget {
   final AutoMediaPlaybackPolicy initialMediaPlaybackPolicy;
 
   @override
-  State<StatefulWidget> createState() => _WebViewState();
+  State<StatefulWidget> createState() => _BridgeWebViewState();
 }
 
-class _WebViewState extends State<WebView> {
+class _BridgeWebViewState extends State<BridgeWebView> {
   final Completer<WebViewController> _controller =
       Completer<WebViewController>();
 
@@ -341,7 +341,7 @@ class _WebViewState extends State<WebView> {
 
   @override
   Widget build(BuildContext context) {
-    return WebView.platform.build(
+    return BridgeWebView.platform.build(
       context: context,
       onWebViewPlatformCreated: _onWebViewPlatformCreated,
       webViewPlatformCallbacksHandler: _platformCallbacksHandler,
@@ -358,7 +358,7 @@ class _WebViewState extends State<WebView> {
   }
 
   @override
-  void didUpdateWidget(WebView oldWidget) {
+  void didUpdateWidget(BridgeWebView oldWidget) {
     super.didUpdateWidget(oldWidget);
     _assertJavascriptChannelNamesAreUnique();
     _controller.future.then((WebViewController controller) {
@@ -386,7 +386,7 @@ class _WebViewState extends State<WebView> {
   }
 }
 
-CreationParams _creationParamsfromWidget(WebView widget) {
+CreationParams _creationParamsfromWidget(BridgeWebView widget) {
   return CreationParams(
     initialUrl: widget.initialUrl,
     webSettings: _webSettingsFromWidget(widget),
@@ -396,7 +396,7 @@ CreationParams _creationParamsfromWidget(WebView widget) {
   );
 }
 
-WebSettings _webSettingsFromWidget(WebView widget) {
+WebSettings _webSettingsFromWidget(BridgeWebView widget) {
   return WebSettings(
     javascriptMode: widget.javascriptMode,
     hasNavigationDelegate: widget.navigationDelegate != null,
@@ -457,7 +457,7 @@ class _PlatformCallbacksHandler implements WebViewPlatformCallbacksHandler {
     _updateJavascriptChannelsFromSet(_widget.javascriptChannels);
   }
 
-  WebView _widget;
+  BridgeWebView _widget;
 
   // Maps a channel name to a channel.
   final Map<String, JavascriptChannel> _javascriptChannels =
@@ -529,7 +529,7 @@ class WebViewController {
 
   WebSettings _settings;
 
-  WebView _widget;
+  BridgeWebView _widget;
 
   /// Loads the specified URL.
   ///
@@ -609,7 +609,7 @@ class WebViewController {
     return reload();
   }
 
-  Future<void> _updateWidget(WebView widget) async {
+  Future<void> _updateWidget(BridgeWebView widget) async {
     _widget = widget;
     await _updateSettings(_webSettingsFromWidget(widget));
     await _updateJavascriptChannels(widget.javascriptChannels);
@@ -704,7 +704,7 @@ class CookieManager {
   /// This is a no op on iOS version smaller than 9.
   ///
   /// Returns true if cookies were present before clearing, else false.
-  Future<bool> clearCookies() => WebView.platform.clearCookies();
+  Future<bool> clearCookies() => BridgeWebView.platform.clearCookies();
 }
 
 // Throws an ArgumentError if `url` is not a valid URL string.

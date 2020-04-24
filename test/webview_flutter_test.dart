@@ -10,8 +10,10 @@ import 'package:flutter/src/foundation/basic_types.dart';
 import 'package:flutter/src/gestures/recognizer.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:webview_flutter/platform_interface.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+
+import '../lib/platform_interface.dart';
+import '../lib/webview_flutter.dart';
+
 
 typedef void VoidCallback();
 
@@ -35,14 +37,14 @@ void main() {
     _fakeCookieManager.reset();
   });
 
-  testWidgets('Create WebView', (WidgetTester tester) async {
-    await tester.pumpWidget(const WebView());
+  testWidgets('Create BridgeWebView', (WidgetTester tester) async {
+    await tester.pumpWidget(const BridgeWebView());
   });
 
   testWidgets('Initial url', (WidgetTester tester) async {
     WebViewController controller;
     await tester.pumpWidget(
-      WebView(
+      BridgeWebView(
         initialUrl: 'https://youtube.com',
         onWebViewCreated: (WebViewController webViewController) {
           controller = webViewController;
@@ -54,7 +56,7 @@ void main() {
   });
 
   testWidgets('Javascript mode', (WidgetTester tester) async {
-    await tester.pumpWidget(const WebView(
+    await tester.pumpWidget(const BridgeWebView(
       initialUrl: 'https://youtube.com',
       javascriptMode: JavascriptMode.unrestricted,
     ));
@@ -64,7 +66,7 @@ void main() {
 
     expect(platformWebView.javascriptMode, JavascriptMode.unrestricted);
 
-    await tester.pumpWidget(const WebView(
+    await tester.pumpWidget(const BridgeWebView(
       initialUrl: 'https://youtube.com',
       javascriptMode: JavascriptMode.disabled,
     ));
@@ -74,7 +76,7 @@ void main() {
   testWidgets('Load url', (WidgetTester tester) async {
     WebViewController controller;
     await tester.pumpWidget(
-      WebView(
+      BridgeWebView(
         onWebViewCreated: (WebViewController webViewController) {
           controller = webViewController;
         },
@@ -91,7 +93,7 @@ void main() {
   testWidgets('Invalid urls', (WidgetTester tester) async {
     WebViewController controller;
     await tester.pumpWidget(
-      WebView(
+      BridgeWebView(
         onWebViewCreated: (WebViewController webViewController) {
           controller = webViewController;
         },
@@ -114,7 +116,7 @@ void main() {
   testWidgets('Headers in loadUrl', (WidgetTester tester) async {
     WebViewController controller;
     await tester.pumpWidget(
-      WebView(
+      BridgeWebView(
         onWebViewCreated: (WebViewController webViewController) {
           controller = webViewController;
         },
@@ -134,7 +136,7 @@ void main() {
       (WidgetTester tester) async {
     WebViewController controller;
     await tester.pumpWidget(
-      WebView(
+      BridgeWebView(
         onWebViewCreated: (WebViewController webViewController) {
           controller = webViewController;
         },
@@ -151,7 +153,7 @@ void main() {
   testWidgets("Clear Cache", (WidgetTester tester) async {
     WebViewController controller;
     await tester.pumpWidget(
-      WebView(
+      BridgeWebView(
         onWebViewCreated: (WebViewController webViewController) {
           controller = webViewController;
         },
@@ -169,7 +171,7 @@ void main() {
   testWidgets("Can't go back with no history", (WidgetTester tester) async {
     WebViewController controller;
     await tester.pumpWidget(
-      WebView(
+      BridgeWebView(
         initialUrl: 'https://flutter.io',
         onWebViewCreated: (WebViewController webViewController) {
           controller = webViewController;
@@ -186,7 +188,7 @@ void main() {
   testWidgets('Can go back', (WidgetTester tester) async {
     WebViewController controller;
     await tester.pumpWidget(
-      WebView(
+      BridgeWebView(
         initialUrl: 'https://flutter.io',
         onWebViewCreated: (WebViewController webViewController) {
           controller = webViewController;
@@ -206,7 +208,7 @@ void main() {
       (WidgetTester tester) async {
     WebViewController controller;
     await tester.pumpWidget(
-      WebView(
+      BridgeWebView(
         onWebViewCreated: (WebViewController webViewController) {
           controller = webViewController;
         },
@@ -223,7 +225,7 @@ void main() {
   testWidgets("Can't go forward with no history", (WidgetTester tester) async {
     WebViewController controller;
     await tester.pumpWidget(
-      WebView(
+      BridgeWebView(
         initialUrl: 'https://flutter.io',
         onWebViewCreated: (WebViewController webViewController) {
           controller = webViewController;
@@ -240,7 +242,7 @@ void main() {
   testWidgets('Can go forward', (WidgetTester tester) async {
     WebViewController controller;
     await tester.pumpWidget(
-      WebView(
+      BridgeWebView(
         initialUrl: 'https://flutter.io',
         onWebViewCreated: (WebViewController webViewController) {
           controller = webViewController;
@@ -260,7 +262,7 @@ void main() {
   testWidgets('Go back', (WidgetTester tester) async {
     WebViewController controller;
     await tester.pumpWidget(
-      WebView(
+      BridgeWebView(
         initialUrl: 'https://youtube.com',
         onWebViewCreated: (WebViewController webViewController) {
           controller = webViewController;
@@ -284,7 +286,7 @@ void main() {
   testWidgets('Go forward', (WidgetTester tester) async {
     WebViewController controller;
     await tester.pumpWidget(
-      WebView(
+      BridgeWebView(
         initialUrl: 'https://youtube.com',
         onWebViewCreated: (WebViewController webViewController) {
           controller = webViewController;
@@ -312,7 +314,7 @@ void main() {
   testWidgets('Current URL', (WidgetTester tester) async {
     WebViewController controller;
     await tester.pumpWidget(
-      WebView(
+      BridgeWebView(
         onWebViewCreated: (WebViewController webViewController) {
           controller = webViewController;
         },
@@ -321,7 +323,7 @@ void main() {
 
     expect(controller, isNotNull);
 
-    // Test a WebView without an explicitly set first URL.
+    // Test a BridgeWebView without an explicitly set first URL.
     expect(await controller.currentUrl(), isNull);
 
     await controller.loadUrl('https://youtube.com');
@@ -337,7 +339,7 @@ void main() {
   testWidgets('Reload url', (WidgetTester tester) async {
     WebViewController controller;
     await tester.pumpWidget(
-      WebView(
+      BridgeWebView(
         initialUrl: 'https://flutter.io',
         onWebViewCreated: (WebViewController webViewController) {
           controller = webViewController;
@@ -364,7 +366,7 @@ void main() {
   testWidgets('evaluate Javascript', (WidgetTester tester) async {
     WebViewController controller;
     await tester.pumpWidget(
-      WebView(
+      BridgeWebView(
         initialUrl: 'https://flutter.io',
         javascriptMode: JavascriptMode.unrestricted,
         onWebViewCreated: (WebViewController webViewController) {
@@ -385,7 +387,7 @@ void main() {
       (WidgetTester tester) async {
     WebViewController controller;
     await tester.pumpWidget(
-      WebView(
+      BridgeWebView(
         initialUrl: 'https://flutter.io',
         javascriptMode: JavascriptMode.disabled,
         onWebViewCreated: (WebViewController webViewController) {
@@ -405,7 +407,7 @@ void main() {
 
   testWidgets('Cookies can be cleared once', (WidgetTester tester) async {
     await tester.pumpWidget(
-      const WebView(
+      const BridgeWebView(
         initialUrl: 'https://flutter.io',
       ),
     );
@@ -417,7 +419,7 @@ void main() {
   testWidgets('Second cookie clear does not have cookies',
       (WidgetTester tester) async {
     await tester.pumpWidget(
-      const WebView(
+      const BridgeWebView(
         initialUrl: 'https://flutter.io',
       ),
     );
@@ -430,7 +432,7 @@ void main() {
 
   testWidgets('Initial JavaScript channels', (WidgetTester tester) async {
     await tester.pumpWidget(
-      WebView(
+      BridgeWebView(
         initialUrl: 'https://youtube.com',
         // TODO(iskakaushik): Remove this when collection literals makes it to stable.
         // ignore: prefer_collection_literals
@@ -470,7 +472,7 @@ void main() {
   testWidgets('Unique JavaScript channel names are required',
       (WidgetTester tester) async {
     await tester.pumpWidget(
-      WebView(
+      BridgeWebView(
         initialUrl: 'https://youtube.com',
         // TODO(iskakaushik): Remove this when collection literals makes it to stable.
         // ignore: prefer_collection_literals
@@ -487,7 +489,7 @@ void main() {
 
   testWidgets('JavaScript channels update', (WidgetTester tester) async {
     await tester.pumpWidget(
-      WebView(
+      BridgeWebView(
         initialUrl: 'https://youtube.com',
         // TODO(iskakaushik): Remove this when collection literals makes it to stable.
         // ignore: prefer_collection_literals
@@ -501,7 +503,7 @@ void main() {
     );
 
     await tester.pumpWidget(
-      WebView(
+      BridgeWebView(
         initialUrl: 'https://youtube.com',
         // TODO(iskakaushik): Remove this when collection literals makes it to stable.
         // ignore: prefer_collection_literals
@@ -530,7 +532,7 @@ void main() {
     // widget's cache of current channel wasn't properly updated when updating javascriptChannels to
     // null.
     await tester.pumpWidget(
-      WebView(
+      BridgeWebView(
         initialUrl: 'https://youtube.com',
         // TODO(iskakaushik): Remove this when collection literals makes it to stable.
         // ignore: prefer_collection_literals
@@ -542,13 +544,13 @@ void main() {
     );
 
     await tester.pumpWidget(
-      const WebView(
+      const BridgeWebView(
         initialUrl: 'https://youtube.com',
       ),
     );
 
     await tester.pumpWidget(
-      WebView(
+      BridgeWebView(
         initialUrl: 'https://youtube.com',
         // TODO(iskakaushik): Remove this when collection literals makes it to stable.
         // ignore: prefer_collection_literals
@@ -570,7 +572,7 @@ void main() {
     final List<String> ttsMessagesReceived = <String>[];
     final List<String> alarmMessagesReceived = <String>[];
     await tester.pumpWidget(
-      WebView(
+      BridgeWebView(
         initialUrl: 'https://youtube.com',
         // TODO(iskakaushik): Remove this when collection literals makes it to stable.
         // ignore: prefer_collection_literals
@@ -605,7 +607,7 @@ void main() {
     testWidgets('onPageStarted is not null', (WidgetTester tester) async {
       String returnedUrl;
 
-      await tester.pumpWidget(WebView(
+      await tester.pumpWidget(BridgeWebView(
         initialUrl: 'https://youtube.com',
         onPageStarted: (String url) {
           returnedUrl = url;
@@ -621,7 +623,7 @@ void main() {
     });
 
     testWidgets('onPageStarted is null', (WidgetTester tester) async {
-      await tester.pumpWidget(const WebView(
+      await tester.pumpWidget(const BridgeWebView(
         initialUrl: 'https://youtube.com',
         onPageStarted: null,
       ));
@@ -637,12 +639,12 @@ void main() {
     testWidgets('onPageStarted changed', (WidgetTester tester) async {
       String returnedUrl;
 
-      await tester.pumpWidget(WebView(
+      await tester.pumpWidget(BridgeWebView(
         initialUrl: 'https://youtube.com',
         onPageStarted: (String url) {},
       ));
 
-      await tester.pumpWidget(WebView(
+      await tester.pumpWidget(BridgeWebView(
         initialUrl: 'https://youtube.com',
         onPageStarted: (String url) {
           returnedUrl = url;
@@ -662,7 +664,7 @@ void main() {
     testWidgets('onPageFinished is not null', (WidgetTester tester) async {
       String returnedUrl;
 
-      await tester.pumpWidget(WebView(
+      await tester.pumpWidget(BridgeWebView(
         initialUrl: 'https://youtube.com',
         onPageFinished: (String url) {
           returnedUrl = url;
@@ -678,7 +680,7 @@ void main() {
     });
 
     testWidgets('onPageFinished is null', (WidgetTester tester) async {
-      await tester.pumpWidget(const WebView(
+      await tester.pumpWidget(const BridgeWebView(
         initialUrl: 'https://youtube.com',
         onPageFinished: null,
       ));
@@ -694,12 +696,12 @@ void main() {
     testWidgets('onPageFinished changed', (WidgetTester tester) async {
       String returnedUrl;
 
-      await tester.pumpWidget(WebView(
+      await tester.pumpWidget(BridgeWebView(
         initialUrl: 'https://youtube.com',
         onPageFinished: (String url) {},
       ));
 
-      await tester.pumpWidget(WebView(
+      await tester.pumpWidget(BridgeWebView(
         initialUrl: 'https://youtube.com',
         onPageFinished: (String url) {
           returnedUrl = url;
@@ -717,7 +719,7 @@ void main() {
 
   group('navigationDelegate', () {
     testWidgets('hasNavigationDelegate', (WidgetTester tester) async {
-      await tester.pumpWidget(const WebView(
+      await tester.pumpWidget(const BridgeWebView(
         initialUrl: 'https://youtube.com',
       ));
 
@@ -726,7 +728,7 @@ void main() {
 
       expect(platformWebView.hasNavigationDelegate, false);
 
-      await tester.pumpWidget(WebView(
+      await tester.pumpWidget(BridgeWebView(
         initialUrl: 'https://youtube.com',
         navigationDelegate: (NavigationRequest r) => null,
       ));
@@ -737,7 +739,7 @@ void main() {
     testWidgets('Block navigation', (WidgetTester tester) async {
       final List<NavigationRequest> navigationRequests = <NavigationRequest>[];
 
-      await tester.pumpWidget(WebView(
+      await tester.pumpWidget(BridgeWebView(
           initialUrl: 'https://youtube.com',
           navigationDelegate: (NavigationRequest request) {
             navigationRequests.add(request);
@@ -768,7 +770,7 @@ void main() {
 
   group('debuggingEnabled', () {
     testWidgets('enable debugging', (WidgetTester tester) async {
-      await tester.pumpWidget(const WebView(
+      await tester.pumpWidget(const BridgeWebView(
         debuggingEnabled: true,
       ));
 
@@ -779,7 +781,7 @@ void main() {
     });
 
     testWidgets('defaults to false', (WidgetTester tester) async {
-      await tester.pumpWidget(const WebView());
+      await tester.pumpWidget(const BridgeWebView());
 
       final FakePlatformWebView platformWebView =
           fakePlatformViewsController.lastCreatedView;
@@ -789,19 +791,19 @@ void main() {
 
     testWidgets('can be changed', (WidgetTester tester) async {
       final GlobalKey key = GlobalKey();
-      await tester.pumpWidget(WebView(key: key));
+      await tester.pumpWidget(BridgeWebView(key: key));
 
       final FakePlatformWebView platformWebView =
           fakePlatformViewsController.lastCreatedView;
 
-      await tester.pumpWidget(WebView(
+      await tester.pumpWidget(BridgeWebView(
         key: key,
         debuggingEnabled: true,
       ));
 
       expect(platformWebView.debuggingEnabled, true);
 
-      await tester.pumpWidget(WebView(
+      await tester.pumpWidget(BridgeWebView(
         key: key,
         debuggingEnabled: false,
       ));
@@ -812,21 +814,21 @@ void main() {
 
   group('Custom platform implementation', () {
     setUpAll(() {
-      WebView.platform = MyWebViewPlatform();
+      BridgeWebView.platform = MyWebViewPlatform();
     });
     tearDownAll(() {
-      WebView.platform = null;
+      BridgeWebView.platform = null;
     });
 
     testWidgets('creation', (WidgetTester tester) async {
       await tester.pumpWidget(
-        const WebView(
+        const BridgeWebView(
           initialUrl: 'https://youtube.com',
           gestureNavigationEnabled: true,
         ),
       );
 
-      final MyWebViewPlatform builder = WebView.platform;
+      final MyWebViewPlatform builder = BridgeWebView.platform;
       final MyWebViewPlatformController platform = builder.lastPlatformBuilt;
 
       expect(
@@ -849,7 +851,7 @@ void main() {
     testWidgets('loadUrl', (WidgetTester tester) async {
       WebViewController controller;
       await tester.pumpWidget(
-        WebView(
+        BridgeWebView(
           initialUrl: 'https://youtube.com',
           onWebViewCreated: (WebViewController webViewController) {
             controller = webViewController;
@@ -857,7 +859,7 @@ void main() {
         ),
       );
 
-      final MyWebViewPlatform builder = WebView.platform;
+      final MyWebViewPlatform builder = BridgeWebView.platform;
       final MyWebViewPlatformController platform = builder.lastPlatformBuilt;
 
       final Map<String, String> headers = <String, String>{
@@ -871,7 +873,7 @@ void main() {
     });
   });
   testWidgets('Set UserAgent', (WidgetTester tester) async {
-    await tester.pumpWidget(const WebView(
+    await tester.pumpWidget(const BridgeWebView(
       initialUrl: 'https://youtube.com',
       javascriptMode: JavascriptMode.unrestricted,
     ));
@@ -881,7 +883,7 @@ void main() {
 
     expect(platformWebView.userAgent, isNull);
 
-    await tester.pumpWidget(const WebView(
+    await tester.pumpWidget(const BridgeWebView(
       initialUrl: 'https://youtube.com',
       javascriptMode: JavascriptMode.unrestricted,
       userAgent: 'UA',
@@ -998,7 +1000,7 @@ class FakePlatformWebView {
         .handlePlatformMessage(channel.name, data, (ByteData data) {});
   }
 
-  // Fakes a main frame navigation that was initiated by the webview, e.g when
+  // Fakes a main frame navigation that was initiated by the BridgeWebView, e.g when
   // the user clicks a link in the currently loaded page.
   void fakeNavigate(String url) {
     if (!hasNavigationDelegate) {

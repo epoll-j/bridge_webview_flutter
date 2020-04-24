@@ -7,13 +7,14 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:e2e/e2e.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:webview_flutter/platform_interface.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-import 'package:e2e/e2e.dart';
+
+import '../../lib/webview_flutter.dart';
+
 
 void main() {
   E2EWidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +25,7 @@ void main() {
     await tester.pumpWidget(
       Directionality(
         textDirection: TextDirection.ltr,
-        child: WebView(
+        child: BridgeWebView(
           key: GlobalKey(),
           initialUrl: 'https://flutter.dev/',
           onWebViewCreated: (WebViewController controller) {
@@ -44,7 +45,7 @@ void main() {
     await tester.pumpWidget(
       Directionality(
         textDirection: TextDirection.ltr,
-        child: WebView(
+        child: BridgeWebView(
           key: GlobalKey(),
           initialUrl: 'https://flutter.dev/',
           onWebViewCreated: (WebViewController controller) {
@@ -69,7 +70,7 @@ void main() {
     await tester.pumpWidget(
       Directionality(
         textDirection: TextDirection.ltr,
-        child: WebView(
+        child: BridgeWebView(
           key: GlobalKey(),
           initialUrl: 'https://flutter.dev/',
           onWebViewCreated: (WebViewController controller) {
@@ -111,7 +112,7 @@ void main() {
     await tester.pumpWidget(
       Directionality(
         textDirection: TextDirection.ltr,
-        child: WebView(
+        child: BridgeWebView(
           key: GlobalKey(),
           // This is the data URL for: '<!DOCTYPE html>'
           initialUrl:
@@ -174,7 +175,7 @@ void main() {
         Completer<WebViewController>();
     final GlobalKey key = GlobalKey();
 
-    final WebView webView = WebView(
+    final BridgeWebView webView = BridgeWebView(
       key: key,
       initialUrl: 'data:text/html;charset=utf-8;base64,$resizeTestBase64',
       onWebViewCreated: (WebViewController controller) {
@@ -245,7 +246,7 @@ void main() {
     await tester.pumpWidget(
       Directionality(
         textDirection: TextDirection.ltr,
-        child: WebView(
+        child: BridgeWebView(
           key: _globalKey,
           initialUrl: 'about:blank',
           javascriptMode: JavascriptMode.unrestricted,
@@ -263,7 +264,7 @@ void main() {
     await tester.pumpWidget(
       Directionality(
         textDirection: TextDirection.ltr,
-        child: WebView(
+        child: BridgeWebView(
           key: _globalKey,
           initialUrl: 'about:blank',
           javascriptMode: JavascriptMode.unrestricted,
@@ -285,7 +286,7 @@ void main() {
     await tester.pumpWidget(
       Directionality(
         textDirection: TextDirection.ltr,
-        child: WebView(
+        child: BridgeWebView(
           key: _globalKey,
           initialUrl: 'https://flutter.dev/',
           javascriptMode: JavascriptMode.unrestricted,
@@ -301,7 +302,7 @@ void main() {
     await tester.pumpWidget(
       Directionality(
         textDirection: TextDirection.ltr,
-        child: WebView(
+        child: BridgeWebView(
           key: _globalKey,
           initialUrl: 'about:blank',
           javascriptMode: JavascriptMode.unrestricted,
@@ -315,7 +316,7 @@ void main() {
     await tester.pumpWidget(
       Directionality(
         textDirection: TextDirection.ltr,
-        child: WebView(
+        child: BridgeWebView(
           key: _globalKey,
           initialUrl: 'about:blank',
           javascriptMode: JavascriptMode.unrestricted,
@@ -367,7 +368,7 @@ void main() {
       await tester.pumpWidget(
         Directionality(
           textDirection: TextDirection.ltr,
-          child: WebView(
+          child: BridgeWebView(
             key: GlobalKey(),
             initialUrl: 'data:text/html;charset=utf-8;base64,$audioTestBase64',
             onWebViewCreated: (WebViewController controller) {
@@ -399,7 +400,7 @@ void main() {
       await tester.pumpWidget(
         Directionality(
           textDirection: TextDirection.ltr,
-          child: WebView(
+          child: BridgeWebView(
             key: GlobalKey(),
             initialUrl: 'data:text/html;charset=utf-8;base64,$audioTestBase64',
             onWebViewCreated: (WebViewController controller) {
@@ -437,7 +438,7 @@ void main() {
       await tester.pumpWidget(
         Directionality(
           textDirection: TextDirection.ltr,
-          child: WebView(
+          child: BridgeWebView(
             key: key,
             initialUrl: 'data:text/html;charset=utf-8;base64,$audioTestBase64',
             onWebViewCreated: (WebViewController controller) {
@@ -467,7 +468,7 @@ void main() {
       await tester.pumpWidget(
         Directionality(
           textDirection: TextDirection.ltr,
-          child: WebView(
+          child: BridgeWebView(
             key: key,
             initialUrl: 'data:text/html;charset=utf-8;base64,$audioTestBase64',
             onWebViewCreated: (WebViewController controller) {
@@ -515,7 +516,7 @@ void main() {
     await tester.pumpWidget(
       Directionality(
         textDirection: TextDirection.ltr,
-        child: WebView(
+        child: BridgeWebView(
           initialUrl: 'data:text/html;charset=utf-8;base64,$getTitleTestBase64',
           onWebViewCreated: (WebViewController controller) {
             controllerCompleter.complete(controller);
@@ -551,7 +552,7 @@ void main() {
       await tester.pumpWidget(
         Directionality(
           textDirection: TextDirection.ltr,
-          child: WebView(
+          child: BridgeWebView(
             key: GlobalKey(),
             initialUrl: blankPageEncoded,
             onWebViewCreated: (WebViewController controller) {
@@ -585,7 +586,7 @@ void main() {
       await tester.pumpWidget(
         Directionality(
           textDirection: TextDirection.ltr,
-          child: WebView(
+          child: BridgeWebView(
             key: GlobalKey(),
             initialUrl: 'https://www.notawebsite..com',
             onWebResourceError: (WebResourceError error) {
@@ -610,7 +611,7 @@ void main() {
       await tester.pumpWidget(
         Directionality(
           textDirection: TextDirection.ltr,
-          child: WebView(
+          child: BridgeWebView(
             key: GlobalKey(),
             initialUrl:
                 'data:text/html;charset=utf-8;base64,PCFET0NUWVBFIGh0bWw+',
@@ -632,7 +633,7 @@ void main() {
       await tester.pumpWidget(
         Directionality(
           textDirection: TextDirection.ltr,
-          child: WebView(
+          child: BridgeWebView(
             key: GlobalKey(),
             initialUrl: blankPageEncoded,
             onWebViewCreated: (WebViewController controller) {
@@ -671,7 +672,7 @@ void main() {
       await tester.pumpWidget(
         Directionality(
           textDirection: TextDirection.ltr,
-          child: WebView(
+          child: BridgeWebView(
             key: GlobalKey(),
             initialUrl: blankPageEncoded,
             onWebViewCreated: (WebViewController controller) {
@@ -711,7 +712,7 @@ void main() {
         child: SizedBox(
           width: 400,
           height: 300,
-          child: WebView(
+          child: BridgeWebView(
             key: GlobalKey(),
             initialUrl: 'https://flutter.dev/',
             gestureNavigationEnabled: true,
@@ -735,7 +736,7 @@ void main() {
     await tester.pumpWidget(
       Directionality(
         textDirection: TextDirection.ltr,
-        child: WebView(
+        child: BridgeWebView(
           key: GlobalKey(),
           onWebViewCreated: (WebViewController controller) {
             controllerCompleter.complete(controller);
