@@ -27,6 +27,29 @@ with the key `io.flutter.embedded_views_preview` and the value `YES`.
 ## Usage
 Add `bridge_webview_flutter` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/).
 
+```
+BridgeWebView(
+    initialUrl: 'https://flutter.dev',
+    javascriptMode: JavascriptMode.unrestricted,
+    onWebViewCreated: (WebViewController webViewController) {
+        _controller.complete(webViewController);
+        webViewController.registerHandler("methodName", response: "r1", onCallBack: (callBackData) {
+            print(callBackData.name); // handler name
+            print(callBackData.data); // callback data ({'param': '1'})
+        });
+        webViewController.callHandler("methodName", data: "sendData", onCallBack: (callBackData) {
+            print(callBackData.name); // handler name
+            print(callBackData.data); // callback data (r2)
+        });
+    },
+    onPageStarted: (String url) {
+        print('Page started loading: $url');
+    },
+    onPageFinished: (String url) {
+        print('Page finished loading: $url');
+    }
+```
+
 ### Register a Flutter handler function so that js can call
 ```
 onWebViewCreated: (WebViewController webViewController) {
