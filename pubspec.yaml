@@ -1,6 +1,5 @@
 name: bridge_webview_flutter
-description: A Flutter plugin that provides a WebView widget on Android and iOS.
-author: Jason Kuang <epoll@foxmail.com>
+description: A Flutter plugin that provides a BridgeWebView widget on Android and iOS.
 version: 0.1.4
 homepage: https://github.com/epoll-j/bridge_webview_flutter
 
