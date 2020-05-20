@@ -14,8 +14,14 @@ import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import androidx.annotation.RequiresApi;
 import androidx.webkit.WebResourceErrorCompat;
 import androidx.webkit.WebViewClientCompat;
+
+import com.github.lzyzsd.jsbridge.BridgeWebView;
+import com.github.lzyzsd.jsbridge.BridgeWebViewClient;
+
 import io.flutter.plugin.common.MethodChannel;
 import java.util.HashMap;
 import java.util.Locale;
@@ -156,6 +162,33 @@ class FlutterWebViewClient {
     }
 
     return internalCreateWebViewClientCompat();
+  }
+
+  public BridgeWebViewClient getBridgeWebViewClient(BridgeWebView webView) {
+    return new BridgeWebViewClient(webView) {
+      @Override
+      public void onPageStarted(WebView view, String url, Bitmap favicon) {
+        FlutterWebViewClient.this.onPageStarted(view, url);
+      }
+
+      @Override
+      public void onPageFinished(WebView view, String url) {
+//        super.onPageFinished(view, url);
+        FlutterWebViewClient.this.onPageFinished(view, url);
+      }
+
+      @Override
+      public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+        FlutterWebViewClient.this.onWebResourceError(errorCode, description);
+      }
+
+      @RequiresApi(api = Build.VERSION_CODES.M)
+      @Override
+      public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+        FlutterWebViewClient.this.onWebResourceError(
+                error.getErrorCode(), error.getDescription().toString());
+      }
+    };
   }
 
   private WebViewClient internalCreateWebViewClient() {

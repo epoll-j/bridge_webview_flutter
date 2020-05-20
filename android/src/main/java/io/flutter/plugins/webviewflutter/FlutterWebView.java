@@ -279,18 +279,21 @@ public class FlutterWebView implements PlatformView, MethodCallHandler {
                     updateJsMode((Integer) settings.get(key));
                     break;
                 case "hasNavigationDelegate":
-                    webView.setWebViewClient(new BridgeWebViewClient(webView));
+                    webView.setWebViewClient(flutterWebViewClient.getBridgeWebViewClient(webView));
+//                    webView.setWebViewClient(new BridgeWebViewClient(webView));
 //                    final boolean hasNavigationDelegate = (boolean) settings.get(key);
-//
+//////
 //                    final WebViewClient webViewClient =
 //                            flutterWebViewClient.createWebViewClient(hasNavigationDelegate);
-//
+////
 //                    webView.setWebViewClient(webViewClient);
                     break;
                 case "debuggingEnabled":
                     final boolean debuggingEnabled = (boolean) settings.get(key);
 
-                    webView.setWebContentsDebuggingEnabled(debuggingEnabled);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        webView.setWebContentsDebuggingEnabled(debuggingEnabled);
+                    }
                     break;
                 case "gestureNavigationEnabled":
                     break;
@@ -320,7 +323,9 @@ public class FlutterWebView implements PlatformView, MethodCallHandler {
         // This is the index of the AutoMediaPlaybackPolicy enum, index 1 is always_allow, for all
         // other values we require a user gesture.
         boolean requireUserGesture = mode != 1;
-        webView.getSettings().setMediaPlaybackRequiresUserGesture(requireUserGesture);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            webView.getSettings().setMediaPlaybackRequiresUserGesture(requireUserGesture);
+        }
     }
 
     private void registerJavaScriptChannelNames(List<String> channelNames) {
