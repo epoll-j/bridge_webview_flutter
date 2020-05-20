@@ -164,7 +164,7 @@ class FlutterWebViewClient {
     return internalCreateWebViewClientCompat();
   }
 
-  public BridgeWebViewClient getBridgeWebViewClient(BridgeWebView webView) {
+  BridgeWebViewClient getBridgeWebViewClient(BridgeWebView webView) {
     return new BridgeWebViewClient(webView) {
       @Override
       public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -173,7 +173,7 @@ class FlutterWebViewClient {
 
       @Override
       public void onPageFinished(WebView view, String url) {
-//        super.onPageFinished(view, url);
+        super.onPageFinished(view, url);
         FlutterWebViewClient.this.onPageFinished(view, url);
       }
 
