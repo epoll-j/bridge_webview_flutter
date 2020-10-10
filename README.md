@@ -1,3 +1,4 @@
+这个库不再维护了，因为跟webview耦合度太高了，把jsbridge内容分离出来重写了一个[plugin](https://github.com/epoll-j/flutter_jsbridge_plugin)
 # Add JsBridge to the WebView
 
 [A Flutter plugin that provides a JsBridge on WebView widget.](https://pub.dev/packages/bridge_webview_flutter)
